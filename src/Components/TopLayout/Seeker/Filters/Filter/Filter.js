@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Dropdown, DropdownButton} from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import '../../../../BottomLayout/CountryInformation/node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 const Filter = (props) => {
     return (

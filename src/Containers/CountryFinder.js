@@ -1,21 +1,31 @@
 import React, {Component} from "react";
-import TopLayout from '../Components/TopLayout/TopLayout';
+import axios from 'axios';
 import { Container } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import TopLayout from '../Components/TopLayout/TopLayout';
+import BottomLayout from '../Components/BottomLayout/BottomLayout';
 
 class CountryFinder extends Component {
     constructor(props){
         super(props);
-        this.state = {country: ''};
+        this.state = {
+            wantedCountry: '',
+            countryInformation: []
+        };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     handleChange(event){
-        this.setState( {country: event.target.value} );
+        this.setState( {wantedCountry: event.target.value} );
     }
     handleSubmit(event){
-        alert('A country was submitted: ' + this.state.country);
+        alert('A country was submitted: ' + this.state.wantedCountry);
+        axios.get(`https://restcountries.eu/rest/v2/name/${this.state.wantedCountry}`)
+        .then(response=>{
+            this.setState({countryInformation: response.data});
+            console.log(this.state.countryInformation);
+        });
         event.preventDefault();
     }
 
@@ -25,9 +35,9 @@ class CountryFinder extends Component {
                 <TopLayout 
                     SeekerOnSubmit = {this.handleSubmit}
                     SeekerOnChange = {this.handleChange}
-                    SeekerCountry = {this.state.country}
+                    SeekerCountry = {this.state.wantedCountry}
                 />
-                <div>Response: Lista de paises e informacion</div>
+                <BottomLayout />
             </Container>
         );
         
