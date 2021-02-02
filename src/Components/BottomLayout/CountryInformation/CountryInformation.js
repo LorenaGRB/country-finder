@@ -1,17 +1,23 @@
 import React from 'react';
-import { Card } from 'react-bootstrap';
+import { Card, ListGroupItem, ListGroup} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const CountryInformation = () =>{
+const CountryInformation = (props) =>{
     return(
         <Card style={{ width: '18rem' }}>
-            <Card.Img variant="top" src="holder.js/100px180" />
+            <Card.Img variant="top" src={props.flag} />
             <Card.Body>
-            <Card.Title>Card Title</Card.Title>
-            <Card.Text>
-                Some quick example text to build on the card title and make up the bulk of
-                the card's content.
-            </Card.Text>
+            <Card.Title>{props.CountryName}PERU</Card.Title>
+            <ListGroup className="list-group-flush">
+                <ListGroupItem>Alpha2Code: {props.alpha2Code}</ListGroupItem>
+                <ListGroupItem>Capital: {props.capital}</ListGroupItem>
+                <ListGroupItem>Region: {props.region}</ListGroupItem>
+                <ListGroupItem>Sub Region: {props.subregion}</ListGroupItem>
+                <ListGroupItem>Latitud-Longitud: {props.latlng}</ListGroupItem>
+                <ListGroupItem>Lenguage: {props.lenguage}</ListGroupItem>
+                <ListGroupItem>Currency: {props.currency}</ListGroupItem>
+                <ListGroupItem>Currency Symbol: {props.currencySymbol}</ListGroupItem>
+            </ListGroup>
             </Card.Body>
         </Card>
     )
