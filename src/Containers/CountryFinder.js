@@ -4,18 +4,21 @@ import { Container } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import TopLayout from '../Components/TopLayout/TopLayout';
-import BottomLayout from '../Components/BottomLayout/BottomLayout';
+import CountryList from '../Components/BottomLayout/CountriesList/CountriesList';
 import CountryInformation from "../Components/BottomLayout/CountryInformation/CountryInformation";
+import { ThemeConsumer } from "react-bootstrap/esm/ThemeProvider";
 
 class CountryFinder extends Component {
     constructor(props){
         super(props);
         this.state = {
             wantedCountry: '',
-            countryInformation: []
+            countryInformation: [],
+            modalIsShow: false
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        
     }
     handleChange(event){
         this.setState( {wantedCountry: event.target.value} );
@@ -25,21 +28,28 @@ class CountryFinder extends Component {
         axios.get(`https://restcountries.eu/rest/v2/name/${this.state.wantedCountry}`)
         .then(response=>{
             this.setState({countryInformation: response.data});
+            this.setState({modalIsShow: true});
             console.log(this.state.countryInformation);
         });
         event.preventDefault();
+    }
+    handleClose = () => {
+        this.setState({modalIsShow: false})
     }
 
     render() {
         const countryinformation = this.state.countryInformation.map(info => {
             return (
                 <CountryInformation 
+                modalIsShow = {this.state.modalIsShow}
+                handleCloseModal = {this.handleClose}
+                countryName = {info.name}
                 flag = {info.flag}
-                alpha2Code={info.alpha2Code}
-                capital={info.capital}
-                region={info.region}
+                alpha2Code = {info.alpha2Code}
+                capital = {info.capital}
+                region = {info.region}
                 subregion = {info.subregion}
-                latlng= {info.latlng}
+                latlng = {info.latlng}
                 lenguage = {info.languages[0].name}
                 currency = {info.currencies[0].name}
                 currencySymbol = {info.currencies[0].symbol}
