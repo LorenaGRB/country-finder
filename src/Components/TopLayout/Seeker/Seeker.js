@@ -2,7 +2,6 @@ import React from "react";
 import { Row, Col, Form, FormGroup, Button} from 'react-bootstrap';
 import { Search } from 'react-bootstrap-icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Filters from './Filters/Filters';
 import Classes from './Seeker.module.css';
 
 
@@ -22,8 +21,7 @@ const Seeker = (props)=> {
                     <Col className = {Classes.SearchIcon}>
                     <Button type = 'submit' ><Search /></Button> 
                     </Col>
-                </Row>
-                <Filters />   
+                </Row>  
             </FormGroup>
         </Form>
     )
