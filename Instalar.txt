@@ -6,3 +6,4 @@ Se necesita intalar lo siguiente:
 	npm add bootstrap react-bootstrap
 3- Para tener axios que es la libreria que maneja del http request:
 	npm install axios
+4- react-bootstrap-icons

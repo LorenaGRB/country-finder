@@ -4,11 +4,11 @@ import { Container } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import TopLayout from '../Components/TopLayout/TopLayout';
+import BottomLayout from "../Components/BottomLayout/CountriesList/BottomLayout";
 import CountriesList from '../Components/BottomLayout/CountriesList/CountriesList';
 import CountryInformation from "../Components/BottomLayout/CountryInformation/CountryInformation";
 import FilterModal from '../Components/TopLayout/Filters/FilterModal';
 import FilterList from '../Components/TopLayout/Filters/FilterList';
-import { Info } from "react-bootstrap-icons";
 
 class CountryFinder extends Component {
     constructor(props){
@@ -19,7 +19,10 @@ class CountryFinder extends Component {
             modalIsShow: false,
             filterModalIsShow: false,
             filterTagValue: 'none',
-            filterListAll: []
+            filterListAll: [],
+            listOfCountriesIsShow: false,
+            filterOfCountries: '',
+            closeListOfCountries:false
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -30,11 +33,10 @@ class CountryFinder extends Component {
     }
 
     handleSubmit(event){
-        axios.get(`https://restcountries.eu/rest/v2/name/${this.state.wantedCountry}`)
+        axios.get(`https://restcountries.eu/rest/v2/name/${this.state.wantedCountry}?fullText=true`)
         .then(response=>{
             this.setState({countryInformation: response.data});
             this.setState({modalIsShow: true});
-            console.log(this.state.countryInformation);
         });
         event.preventDefault();
     }
@@ -44,17 +46,24 @@ class CountryFinder extends Component {
 
     handleShowFilterModal = (e)=>{
         this.setState({filterTagValue: e.target.value});
-
         axios.get(`https://restcountries.eu/rest/v2/all`)
         .then(response=>{ 
             this.setState({filterListAll: response.data});
             this.setState({filterModalIsShow: true});
-            this.setState({modalIsShow: true});
+            this.setState({modalIsShow: false});
         }); 
         e.preventDefault();
     }
     handleCloseFilterModal= () => {
         this.setState({filterModalIsShow: false})
+    }
+
+    handleShowListByFilter= (e)=>{
+        this.setState({listOfCountriesIsShow: true});
+        this.setState({filterModalIsShow: false});
+        this.setState({filterOfCountries: e.target.value});
+        e.preventDefault();
+        console.log(this.state.filterOfCountries)
     }
 
     render() {
@@ -76,24 +85,50 @@ class CountryFinder extends Component {
             />)
         })
 
+
+//mapeamos a filterListAll que es lo obtenido en la peticion http,luego hacemos una pregunta si filterTagValue (el tipo de filtro seleccionado) 
+//es igual a region, ya que en el response para obtener la region la ruta es info.region, pero para obtener lenguages y currencies la ruta es info.lenguages[0].name
+//finalmente creamos un arreglo filterList que guarda por cada mapeo solamente la informacion que pide filterPath. ya sea region,lenguaje o currency
         const filterList = this.state.filterListAll.map(info=> {
-            let variable="";
-            this.state.filterTagValue === "region" ? variable="info.region": variable = "info."+this.state.filterTagValue+"[0].name";
-            let variableArray = []
+            let filterPath = "";
+            let filterList = [];
+
+            this.state.filterTagValue === "region" ? filterPath="info.region": filterPath = "info."+this.state.filterTagValue+"[0].name";
             return (
-                variableArray = eval (variable)
+                filterList = eval (filterPath)
             )
         })
-        let result = filterList.filter((item,index)=>{
+//Como el arreglo anterior tiene valores repetidos, los filtramos y lo colocamos en filterListWithOutRep
+        let filterListWithOutRep = filterList.filter((item,index)=>{
             return filterList.indexOf(item) === index;
         })
-        const filterListPrint = result.map(info=> {
+//Se mostraran los valores obtenidos 
+        const filterListPrint = filterListWithOutRep.map(info=> {
             return (
-                <FilterList filterContent={info}/>
+                <FilterList filterContent={info} handleShowListByFilter={this.handleShowListByFilter}/>
             )
         })
+
+        const ShowingListOfCountriesByFilter = this.state.filterListAll.map((info,index)=> {
+            let countriesPath = "";
+            let countriesList = [];
+            (filterList[index] === this.state.filterOfCountries) ? countriesPath="info.name" : countriesPath=null  ;
+            return(
+                countriesList=eval(countriesPath)
+            )
+        })
+        let listOfCountriesWithOutRep = ShowingListOfCountriesByFilter.filter((item,index)=>{
+            return ShowingListOfCountriesByFilter.indexOf(item) === index;
+        })
+        const countriesListPrint = listOfCountriesWithOutRep.map(info=> {
+            return (
+                <CountriesList country={info} />
+            )
+        })
+
         return (
             <Container  className='p-0' fluid>
+
                 <TopLayout 
                     SeekerOnSubmit = {this.handleSubmit}
                     SeekerOnChange = {this.handleChange}
@@ -101,6 +136,7 @@ class CountryFinder extends Component {
                     handleShowFilterModal = {this.handleShowFilterModal}
                 />
                 {countryinformation}
+
                 <FilterModal
                     filterModalIsShow = {this.state.filterModalIsShow} 
                     filterTagValue = {this.state.filterTagValue}
@@ -108,6 +144,11 @@ class CountryFinder extends Component {
                 >
                     {filterListPrint}
                 </FilterModal>
+                <BottomLayout listOfCountriesIsShow={this.state.listOfCountriesIsShow} >
+                    {countriesListPrint}
+                </BottomLayout>
+
+
             </Container>
         );
         
