@@ -4,9 +4,11 @@ import { Container } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import TopLayout from '../Components/TopLayout/TopLayout';
-import CountryList from '../Components/BottomLayout/CountriesList/CountriesList';
+import CountriesList from '../Components/BottomLayout/CountriesList/CountriesList';
 import CountryInformation from "../Components/BottomLayout/CountryInformation/CountryInformation";
-import { ThemeConsumer } from "react-bootstrap/esm/ThemeProvider";
+import FilterModal from '../Components/TopLayout/Filters/FilterModal';
+import FilterList from '../Components/TopLayout/Filters/FilterList';
+import { Info } from "react-bootstrap-icons";
 
 class CountryFinder extends Component {
     constructor(props){
@@ -14,17 +16,20 @@ class CountryFinder extends Component {
         this.state = {
             wantedCountry: '',
             countryInformation: [],
-            modalIsShow: false
+            modalIsShow: false,
+            filterModalIsShow: false,
+            filterTagValue: 'none',
+            filterListAll: []
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        
     }
+
     handleChange(event){
         this.setState( {wantedCountry: event.target.value} );
     }
+
     handleSubmit(event){
-        alert('A country was submitted: ' + this.state.wantedCountry);
         axios.get(`https://restcountries.eu/rest/v2/name/${this.state.wantedCountry}`)
         .then(response=>{
             this.setState({countryInformation: response.data});
@@ -33,8 +38,23 @@ class CountryFinder extends Component {
         });
         event.preventDefault();
     }
-    handleClose = () => {
+    handleCloseSearch = () => {
         this.setState({modalIsShow: false})
+    }
+
+    handleShowFilterModal = (e)=>{
+        this.setState({filterTagValue: e.target.value});
+
+        axios.get(`https://restcountries.eu/rest/v2/all`)
+        .then(response=>{ 
+            this.setState({filterListAll: response.data});
+            this.setState({filterModalIsShow: true});
+            this.setState({modalIsShow: true});
+        }); 
+        e.preventDefault();
+    }
+    handleCloseFilterModal= () => {
+        this.setState({filterModalIsShow: false})
     }
 
     render() {
@@ -42,7 +62,7 @@ class CountryFinder extends Component {
             return (
                 <CountryInformation 
                 modalIsShow = {this.state.modalIsShow}
-                handleCloseModal = {this.handleClose}
+                handleCloseModal = {this.handleCloseSearch}
                 countryName = {info.name}
                 flag = {info.flag}
                 alpha2Code = {info.alpha2Code}
@@ -56,14 +76,38 @@ class CountryFinder extends Component {
             />)
         })
 
+        const filterList = this.state.filterListAll.map(info=> {
+            let variable="";
+            this.state.filterTagValue === "region" ? variable="info.region": variable = "info."+this.state.filterTagValue+"[0].name";
+            let variableArray = []
+            return (
+                variableArray = eval (variable)
+            )
+        })
+        let result = filterList.filter((item,index)=>{
+            return filterList.indexOf(item) === index;
+        })
+        const filterListPrint = result.map(info=> {
+            return (
+                <FilterList filterContent={info}/>
+            )
+        })
         return (
             <Container  className='p-0' fluid>
                 <TopLayout 
                     SeekerOnSubmit = {this.handleSubmit}
                     SeekerOnChange = {this.handleChange}
                     SeekerCountry = {this.state.wantedCountry}
+                    handleShowFilterModal = {this.handleShowFilterModal}
                 />
                 {countryinformation}
+                <FilterModal
+                    filterModalIsShow = {this.state.filterModalIsShow} 
+                    filterTagValue = {this.state.filterTagValue}
+                    handleCloseFilterModal = {this.handleCloseFilterModal}
+                >
+                    {filterListPrint}
+                </FilterModal>
             </Container>
         );
         

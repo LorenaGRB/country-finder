@@ -5,9 +5,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const CountryInformation = (props) =>{
     return(
         <Modal show={props.modalIsShow} onHide={props.handleCloseModal}>
-            <Modal.Header closeButton>Country Information</Modal.Header>
-                <Card style={{ width: '18rem' }}>
-                    <Card.Img variant="top" src={props.flag} />
+            <Modal.Header closeButton className= 'h4'>COUNTRY INFORMATION</Modal.Header>
+                <Card >
+                    <Card.Img variant="top" src={props.flag} center/>
                     <Card.Body>
                     <Card.Title>{props.countryName}</Card.Title>
                     <ListGroup className="list-group-flush">

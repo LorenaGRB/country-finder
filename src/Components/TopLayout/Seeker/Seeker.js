@@ -4,7 +4,6 @@ import { Search } from 'react-bootstrap-icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Classes from './Seeker.module.css';
 
-
 const Seeker = (props)=> {
     return(
         <Form onSubmit = {props.OnSubmit}>
@@ -19,7 +18,7 @@ const Seeker = (props)=> {
                         />
                     </Col>
                     <Col className = {Classes.SearchIcon}>
-                    <Button type = 'submit' ><Search /></Button> 
+                        <Button type = 'submit' value='name'><Search /></Button> 
                     </Col>
                 </Row>  
             </FormGroup>
