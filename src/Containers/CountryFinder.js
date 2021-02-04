@@ -87,34 +87,30 @@ class CountryFinder extends Component {
 //es igual a region, ya que en el response para obtener la region la ruta es info.region, pero para obtener lenguages y currencies la ruta es info.lenguages[0].name
 //finalmente creamos un arreglo filterList que guarda por cada mapeo solamente la informacion que pide filterPath. ya sea region,lenguaje o currency
         const filterList = this.state.filterListAll.map(info=> {
-            let filterPath = "";
-            let filterList = [];
-            this.state.filterTagValue === "region" ? filterPath="info.region": filterPath = "info."+this.state.filterTagValue+"[0].name";
-            return (
-                filterList = eval (filterPath)
-            )
+            if (this.state.filterTagValue === "region") 
+                return info[this.state.filterTagValue]
+            else 
+                return info[this.state.filterTagValue][0].name
         })
 //Como el arreglo anterior tiene valores repetidos, los filtramos y lo colocamos en filterListWithOutRep
-        let filterListWithOutRep = filterList.filter((item,index)=>{
-            return filterList.indexOf(item) === index;
+        let filterListWithOutRepetition = filterList.filter((item,index)=>{
+            return filterList.indexOf(item) === index ;
         })
 //Se mostraran los valores obtenidos 
-        const filterListPrint = filterListWithOutRep.map(info=> {
+        const filterListPrint = filterListWithOutRepetition.map(info=> {
             return (
                 <FilterList filterContent={info} handleShowListByFilter={this.handleShowListByFilter}/>
             )
         })
 
         const ShowingListOfCountriesByFilter = this.state.filterListAll.map((info,index)=> {
-            let countriesPath = "";
-            let countriesList = [];
-            (filterList[index] === this.state.filterOfCountries) ? countriesPath="info.name" : countriesPath=null  ;
-            return(
-                countriesList=eval(countriesPath)
-            )
+            if (filterList[index] === this.state.filterOfCountries) 
+                return info.name;
+            else 
+                return null  
         })
         let listOfCountriesWithOutRep = ShowingListOfCountriesByFilter.filter((item,index)=>{
-            return ShowingListOfCountriesByFilter.indexOf(item) === index;
+            return (ShowingListOfCountriesByFilter.indexOf(item) === index) && (item);
         })
         const countriesListPrint = listOfCountriesWithOutRep.map(info=> {
             return (
