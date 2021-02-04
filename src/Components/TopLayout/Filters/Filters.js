@@ -1,6 +1,5 @@
 import React from "react";
 import { Tab, Nav, Button } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Filters = (props)=> {
     return(

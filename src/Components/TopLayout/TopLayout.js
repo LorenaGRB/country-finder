@@ -1,6 +1,5 @@
 import React from "react";
 import { Navbar , Row, Col, Container} from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import Seeker from './Seeker/Seeker';
 import Filters from './Filters/Filters';
 import Classes from './TopLayout.module.css';

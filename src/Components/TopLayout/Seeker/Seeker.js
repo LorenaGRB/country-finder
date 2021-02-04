@@ -1,7 +1,6 @@
 import React from "react";
 import { Row, Col, Form, FormGroup, Button } from 'react-bootstrap';
 import { Search } from 'react-bootstrap-icons';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import Classes from './Seeker.module.css';
 
 const Seeker = (props)=> {

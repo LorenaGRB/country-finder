@@ -1,6 +1,5 @@
 import React from 'react';
 import { ListGroup, Modal } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 const FilterModal= (props) =>{
     return(

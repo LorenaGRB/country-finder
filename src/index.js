@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import CountryFinder from './Containers/CountryFinder';
+import App from './App';
 import reportWebVitals from './reportWebVitals';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.render(
   <React.StrictMode>
-    <CountryFinder />
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 );

@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import axios from 'axios';
 import { Container } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 import TopLayout from '../Components/TopLayout/TopLayout';
 import BottomLayout from "../Components/BottomLayout/BottomLayout";

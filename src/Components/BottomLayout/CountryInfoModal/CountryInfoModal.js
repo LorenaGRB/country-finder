@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, ListGroupItem, ListGroup, Modal} from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 const CountryInformation = (props) =>{
     return(
