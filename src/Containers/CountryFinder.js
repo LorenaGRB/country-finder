@@ -4,9 +4,9 @@ import { Container } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import TopLayout from '../Components/TopLayout/TopLayout';
-import BottomLayout from "../Components/BottomLayout/CountriesList/BottomLayout";
+import BottomLayout from "../Components/BottomLayout/BottomLayout";
 import CountriesList from '../Components/BottomLayout/CountriesList/CountriesList';
-import CountryInformation from "../Components/BottomLayout/CountryInformation/CountryInformation";
+import CountryInfoModal from "../Components/BottomLayout/CountryInfoModal/CountryInfoModal";
 import FilterModal from '../Components/TopLayout/Filters/FilterModal';
 import FilterList from '../Components/TopLayout/Filters/FilterList';
 
@@ -63,13 +63,12 @@ class CountryFinder extends Component {
         this.setState({filterModalIsShow: false});
         this.setState({filterOfCountries: e.target.value});
         e.preventDefault();
-        console.log(this.state.filterOfCountries)
     }
 
     render() {
         const countryinformation = this.state.countryInformation.map(info => {
             return (
-                <CountryInformation 
+                <CountryInfoModal 
                 modalIsShow = {this.state.modalIsShow}
                 handleCloseModal = {this.handleCloseSearch}
                 countryName = {info.name}
@@ -84,15 +83,12 @@ class CountryFinder extends Component {
                 currencySymbol = {info.currencies[0].symbol}
             />)
         })
-
-
 //mapeamos a filterListAll que es lo obtenido en la peticion http,luego hacemos una pregunta si filterTagValue (el tipo de filtro seleccionado) 
 //es igual a region, ya que en el response para obtener la region la ruta es info.region, pero para obtener lenguages y currencies la ruta es info.lenguages[0].name
 //finalmente creamos un arreglo filterList que guarda por cada mapeo solamente la informacion que pide filterPath. ya sea region,lenguaje o currency
         const filterList = this.state.filterListAll.map(info=> {
             let filterPath = "";
             let filterList = [];
-
             this.state.filterTagValue === "region" ? filterPath="info.region": filterPath = "info."+this.state.filterTagValue+"[0].name";
             return (
                 filterList = eval (filterPath)
@@ -128,7 +124,6 @@ class CountryFinder extends Component {
 
         return (
             <Container  className='p-0' fluid>
-
                 <TopLayout 
                     SeekerOnSubmit = {this.handleSubmit}
                     SeekerOnChange = {this.handleChange}
@@ -136,7 +131,6 @@ class CountryFinder extends Component {
                     handleShowFilterModal = {this.handleShowFilterModal}
                 />
                 {countryinformation}
-
                 <FilterModal
                     filterModalIsShow = {this.state.filterModalIsShow} 
                     filterTagValue = {this.state.filterTagValue}
@@ -147,11 +141,8 @@ class CountryFinder extends Component {
                 <BottomLayout listOfCountriesIsShow={this.state.listOfCountriesIsShow} >
                     {countriesListPrint}
                 </BottomLayout>
-
-
             </Container>
         );
-        
     }
 }
 export default CountryFinder;

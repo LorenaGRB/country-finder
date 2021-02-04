@@ -1,8 +1,12 @@
 .SearchIcon{
-    padding-right: 30px;
+    padding-right: 5px;
     padding-left: 0px;
     max-width: 10px;
 }
 form{
     margin-top: 25px;
+}
+.Zero{
+    padding:0px;
+    margin:0px;
 }

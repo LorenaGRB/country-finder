@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, ListGroup, ButtonGroup, Modal} from 'react-bootstrap';
+import { ListGroup, Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const FilterModal= (props) =>{

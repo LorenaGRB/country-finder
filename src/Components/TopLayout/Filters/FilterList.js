@@ -1,5 +1,5 @@
 import React from 'react';
-import {  ListGroup, Button} from 'react-bootstrap';
+import { ListGroup, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const FilterList = (props) =>{

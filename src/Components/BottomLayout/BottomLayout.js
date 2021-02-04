@@ -6,9 +6,9 @@ const CountriesList = (props) =>{
     return(
     <Toast show={props.listOfCountriesIsShow} >
         <Card>
-            <Toast.Header fluid >
+            <Card.Header fluid >
             <strong className="mr-auto">Countries</strong>
-            </Toast.Header>
+            </Card.Header>
             <ListGroup variant="flush">
                 {props.children}
             </ListGroup>
